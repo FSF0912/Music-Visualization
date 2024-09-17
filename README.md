@@ -1,5 +1,5 @@
 ### 音频可视化解决方案/Music-Visualization Solution/音楽可視化ソリューション
-[![Sample1]](https://github.com/FSF0912/Music-Visualization/SamplePic.jpg)  [![Sample2]](https://github.com/FSF0912/Music-Visualization/SamplePic1.jpg)
+![Sample1](https://github.com/FSF0912/Music-Visualization/blob/main/SamplePic.png)  ![Sample2](https://github.com/FSF0912/Music-Visualization/blob/main/samplePic2.png)
 ---
 This is an audio visualization solution running in `UnityEngine`.    
 Including `audio` and `microphone` input visual. (some rectangular or similar objects zoom in and out with the rhythm of music).
