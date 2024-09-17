@@ -1,4 +1,8 @@
-这是一个在Unity中运行的音频可视化解决方案。
-包括音频，语音输入可视化(一些长方体或者类似的物体跟随着音乐节奏缩放)
-包括歌词显示，支持导入.lrc歌词文件并转换为可供在unity使用的列表。
-如果你喜欢这个项目，请给我的仓库点一个Star！
+### 音频可视化解决方案/Music-Visualization Solution/音楽可視化ソリューション
+---
+This is an audio visualization solution running in `UnityEngine`.    
+Including `audio` and `microphone` input visual. (some rectangular or similar objects zoom in and out with the rhythm of music).
+
+#### Including lyric display, supporting importing.
+Import your .lrc file and it will automatic-converting them into a list available for use in Unity.    
+##### If you like this project, please give me a Star!
