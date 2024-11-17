@@ -13,8 +13,9 @@ namespace FSF.Tools{
             string lrcPath = ctx.assetPath;
             string lrcText = File.ReadAllText(ctx.assetPath);
             TextAsset textAsset = new TextAsset(lrcText);
+            EditorApplication.delayCall += () =>{
             AssetDatabase.DeleteAsset(lrcPath);
-            AssetDatabase.CreateAsset(textAsset, lrcPath.Replace("lrc", "asset"));
+            AssetDatabase.CreateAsset(textAsset, lrcPath.Replace("lrc", "asset"));}
             //AssetDatabase.SaveAssets();
             //AssetDatabase.Refresh();
         }
