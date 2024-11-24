@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-namespace  FSF.Tools{
+namespace  FSF.CollectionFrame{
 public class Lyric_Demo : MonoBehaviour
 {
     [SerializeField] private Text targetText;
@@ -28,4 +31,17 @@ public class Lyric_Demo : MonoBehaviour
             }
         }
     }
+    #if UNITY_EDITOR
+    public class Lyric_DemoEditor : Editor{
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            if(GUILayout.Button("Get Lyrics")){
+                var T = target as Lyric_Demo;
+                if(T == null){return;}
+                T.GetLyrics();
+            }
+        }
+        }
+    #endif
 }}

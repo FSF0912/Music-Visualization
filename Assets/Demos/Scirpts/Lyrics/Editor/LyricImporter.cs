@@ -2,10 +2,8 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.AssetImporters;
 using System.IO;
-using System.Drawing.Printing;
-using System.Threading.Tasks;
 
-namespace FSF.Tools{
+namespace FSF.CollectionFrame{
     [ScriptedImporter(1, "lrc")]
     public class LyricImporter : ScriptedImporter
     {
@@ -15,7 +13,8 @@ namespace FSF.Tools{
             TextAsset textAsset = new TextAsset(lrcText);
             EditorApplication.delayCall += () =>{
             AssetDatabase.DeleteAsset(lrcPath);
-            AssetDatabase.CreateAsset(textAsset, lrcPath.Replace("lrc", "asset"));}
+            AssetDatabase.CreateAsset(textAsset, lrcPath.Replace("lrc", "asset"));
+            };
             //AssetDatabase.SaveAssets();
             //AssetDatabase.Refresh();
         }
