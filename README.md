@@ -17,7 +17,7 @@ download it at https://github.com/FSF0912/Music-Visualization/releases/
         (此规则只适用于文字里提到的歌词排列顺序，如果你下载的歌词排列顺序不同，请根据实际情况调整。)
 
 
-        ↓↓↓translated by Google Translate↓↓↓
+       ↓↓↓translated by Google Translate↓↓↓
 
         Generally speaking, if the lyrics we download have translations, 
         they are usually <sorted after the original>.
