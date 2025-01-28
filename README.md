@@ -1,4 +1,4 @@
-### 音频可视化解决方案/Music-Visualization Solution/音楽可視化ソリューション
+# 音频可视化解决方案/Music-Visualization Solution/音楽可視化ソリューション
 ![Sample1](https://github.com/FSF0912/Music-Visualization/blob/main/SamplePic.png)  ![Sample2](https://github.com/FSF0912/Music-Visualization/blob/main/samplePic2.png)
 ---
 This is an audio visualization solution running in `UnityEngine`.    
@@ -6,7 +6,7 @@ Including `audio` and `microphone` input visual. (some rectangular or similar ob
 
 #### Including lyric display, supporting importing.
 Import your .lrc file and it will automatic-converting them into a list available for use in Unity.    
-##### If you like this project, please give me a Star!
+#### If you like this project, please give me a Star!
 download at https://github.com/FSF0912/Music-Visualization/releases/
 ---
 ##### more infos:
@@ -17,7 +17,7 @@ download at https://github.com/FSF0912/Music-Visualization/releases/
         (此规则只适用于文字里提到的歌词排列顺序，如果你下载的歌词排列顺序不同，请根据实际情况调整。)
 
 
-#### ↓↓↓translated by Google Translate↓↓↓        
+###### ↓↓↓translated by Google Translate↓↓↓        
 Generally speaking, if the lyrics we download have translations, 
 they are usually <sorted after the original>.
 
