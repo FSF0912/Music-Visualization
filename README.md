@@ -25,7 +25,7 @@ Features rhythmic transformations of geometric objects synchronized with audio f
 - Unity 2021.3+ 
 
 ### Installation
-[![Download Latest Release](https://img.shields.io/badge/Download-v1.0.0-blue)](https://github.com/FSF0912/Music-Visualization/releases/)
+[![Download Latest Release](https://img.shields.io/badge/Download-v1.0.2-blue)](https://github.com/FSF0912/Music-Visualization/releases/)
 
 ## Configuration Guide
 ### Lyrics Order Management
