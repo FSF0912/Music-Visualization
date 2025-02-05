@@ -1,39 +1,54 @@
-# 音频可视化解决方案/Music-Visualization Solution/音楽可視化ソリューション
-![Sample1](https://github.com/FSF0912/Music-Visualization/blob/main/SamplePic.png)  ![Sample2](https://github.com/FSF0912/Music-Visualization/blob/main/samplePic2.png)
----
-This is an audio visualization solution running in `UnityEngine`.    
-Including `audio` and `microphone` input visual. (some rectangular or similar objects zoom in and out with the rhythm of music).
+# Audio Visualization Solution / 音乐可视化解决方案 / 音楽可視化ソリューション
 
-#### Including lyric display, supporting importing.
-Import your .lrc file and it will automatic-converting them into a list available for use in Unity.    
-#### If you like this project, please give me a Star!
-download at https://github.com/FSF0912/Music-Visualization/releases/
----
-##### more infos:
+![Visualization Sample 1](https://github.com/FSF0912/Music-Visualization/blob/main/SamplePic.png)  
+![Visualization Sample 2](https://github.com/FSF0912/Music-Visualization/blob/main/samplePic2.png)
 
-一般来说，我们下载的歌词如果有翻译的话，一般<都排在原文之后>。
-        控制reverse参数可以决定分解出来的歌词是翻译歌词排在前面还是原文歌词排在前面。
-        如果为true,原文歌词将会排在前面；反之排在后面。
-        (此规则只适用于文字里提到的歌词排列顺序，如果你下载的歌词排列顺序不同，请根据实际情况调整。)
+## Overview
+A real-time audio visualization system developed with `Unity 2021.3 LTS`.  
+Supports both **pre-recorded audio** and **live microphone input** visualization.  
+Features rhythmic transformations of geometric objects synchronized with audio frequencies.
 
+## Key Features
+### 1. Dynamic Lyrics Display
+- **File Format Support**: `.lrc (LyRiCs)`
+- **Auto-Conversion**: Automatically parses lyric files into Unity-compatible data structures
+- **Bilingual Support**: Handles translated lyrics with configurable ordering
 
-###### ↓↓↓translated by Google Translate↓↓↓        
-Generally speaking, if the lyrics we download have translations, 
-they are usually <sorted after the original>.
+### 2. Visualization Modes
+- Spectrum Analyzer
+- Waveform Monitor
+- Beat Detection Visualization
+- Customizable geometric transformations
 
-Controlling the reverse parameter can determine whether the decomposed lyrics are sorted first,
-the translated lyrics or the original lyrics.
+## Getting Started
+### System Requirements
+- Unity 2021.3+ 
 
-If true, the original lyrics will be sorted first; otherwise, they will be sorted last.
-(This rule only applies to the order of lyrics mentioned in the text.,
-If the order of lyrics you downloaded is different, please adjust it according to the actual situation.)
+### Installation
+[![Download Latest Release](https://img.shields.io/badge/Download-v1.0.0-blue)](https://github.com/FSF0912/Music-Visualization/releases/)
 
+## Configuration Guide
+### Lyrics Order Management
+```csharp
+LyricSpliter.Split(TextAsset lrc, bool reverseTranslate = false);
 
-一般的に、ダウンロードした歌詞に翻訳がある場合、通常は<原文の後にランク付けされます>。
+LyricSpliter.Split(string lrc, bool reverseTranslate = false);
+```
 
-逆パラメータを制御することで、分解された歌詞が翻訳された歌詞かオリジナルの歌詞のどちらが 1 位にランクされるかを決定できます。
+#### Parameter Behavior
+| Reverse Value | Ordering Scheme        |
+|---------------|------------------------|
+| `true`        | Original → Translation |
+| `false`       | Translation → Original |
 
-true の場合、元の歌詞が最初にランク付けされます。それ以外の場合は、元の歌詞が後にランク付けされます。
-(このルールは本文中に記載されている歌詞の順序にのみ適用されます。
-ダウンロードした歌詞の順序が異なる場合は、実際の状況に応じて調整してください。)
-        
+> **Note**: This configuration applies to standard bilingual lyrics format. Custom formats may require additional adjustments.
+
+## Contribution & Support
+[![GitHub Stars](https://img.shields.io/github/stars/FSF0912/Music-Visualization?style=social)](https://github.com/FSF0912/Music-Visualization/stargazers)
+
+If you find this project useful, please consider:
+- ⭐ **Starring** the repository
+- 🐛 Reporting issues
+- 🎨 Submitting pull requests
+
+For commercial usage inquiries, please contact the maintainer.
