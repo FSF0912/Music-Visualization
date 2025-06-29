@@ -58,8 +58,6 @@ public static List<LyricValueKey> Split(string lrcText, bool reverse, params str
 [![GitHub Stars](https://img.shields.io/github/stars/FSF0912/Music-Visualization?style=social)](https://github.com/FSF0912/Music-Visualization/stargazers)
 
 If you find this project useful, please consider:
-- ⭐ **Starring** the repository
-- 🐛 Reporting issues
-- 🎨 Submitting pull requests
-
-For commercial usage inquiries, please contact the maintainer.
+- **Starring** the repository
+- Reporting issues
+- Submitting pull requests
