@@ -15,8 +15,6 @@ namespace FSF.CollectionFrame{
             AssetDatabase.DeleteAsset(lrcPath);
             AssetDatabase.CreateAsset(textAsset, lrcPath.Replace("lrc", "asset"));
             };
-            //AssetDatabase.SaveAssets();
-            //AssetDatabase.Refresh();
         }
     }
 }
