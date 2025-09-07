@@ -74,38 +74,43 @@ namespace FSF.CollectionFrame
         /// <returns>List of parsed lyric entries</returns>
         public static List<LyricValueKey> Split(string lrcText, bool reverse, params string[] richTextSymbols)
         {
+            if (string.IsNullOrEmpty(lrcText))
+                return new List<LyricValueKey>(0);
+
             var value = new List<LyricValueKey>(64);
             var builder = new StringBuilder(256);
+            ReadOnlySpan<char> textSpan = lrcText.AsSpan();
             int lineStart = 0;
             LyricValueKey previousKey = null;
 
-            for (int i = 0; i <= lrcText.Length; i++)
+            for (int i = 0; i <= textSpan.Length; i++)
             {
-                if (i != lrcText.Length && lrcText[i] != '\n' && lrcText[i] != '\r') 
+                if (i != textSpan.Length && textSpan[i] != '\n' && textSpan[i] != '\r') 
                     continue;
                 
-                string line = string.Empty;
+                ReadOnlySpan<char> lineSpan = ReadOnlySpan<char>.Empty;
                 if (i > lineStart)
                 {
-                    line = lrcText.Substring(lineStart, i - lineStart).Trim();
+                    lineSpan = textSpan.Slice(lineStart, i - lineStart).Trim();
                 }
                 
                 lineStart = i + 1;
 
-                if (i < lrcText.Length - 1 && lrcText[i] == '\r' && lrcText[i+1] == '\n')
+                // \r\n
+                if (i < textSpan.Length - 1 && textSpan[i] == '\r' && textSpan[i + 1] == '\n')
                 {
                     i++;
                     lineStart = i + 1;
                 }
 
-                if (string.IsNullOrEmpty(line) || line[0] != '[')
+                if (lineSpan.IsEmpty || lineSpan[0] != '[')
                     continue;
                 
-                int timeEnd = ParseTimeTag(line, out float timeValue);
+                int timeEnd = ParseTimeTag(lineSpan, out float timeValue);
                 if (timeValue < 0 || timeEnd < 0)
                     continue;
 
-                string lyric = ExtractLyricText(line, timeEnd);
+                string lyric = ExtractLyricText(lineSpan, timeEnd);
                 lyric = ApplyLanguageTags(lyric, richTextSymbols, reverse);
                 
                 var currentKey = new LyricValueKey(lyric, timeValue);
@@ -134,11 +139,15 @@ namespace FSF.CollectionFrame
         /// <returns>Formatted lyric with rich text tags applied</returns>
         private static string ApplyLanguageTags(string lyric, string[] tags, bool reverse)
         {
-            if (tags == null || tags.Length < 1) 
+            if (tags == null || tags.Length < 1 || string.IsNullOrEmpty(lyric)) 
                 return lyric;
+                
             string[] languageParts = lyric.Split('\n');
             for (int i = 0; i < languageParts.Length; i++)
             {
+                if (string.IsNullOrEmpty(languageParts[i]))
+                    continue;
+                    
                 int tagIndex;
                 if (reverse)
                 {
@@ -148,6 +157,7 @@ namespace FSF.CollectionFrame
                 {
                     tagIndex = i;
                 }
+                
                 if (tagIndex < tags.Length && !string.IsNullOrEmpty(tags[tagIndex]))
                 {
                     string pattern = tags[tagIndex];
@@ -178,14 +188,15 @@ namespace FSF.CollectionFrame
         /// <param name="line">Full lyric line with time tag</param>
         /// <param name="time">Output parameter for parsed time (in seconds)</param>
         /// <returns>End position of the time tag, or -1 on error</returns>
-        private static int ParseTimeTag(string line, out float time)
+        private static int ParseTimeTag(ReadOnlySpan<char> line, out float time)
         {
             time = -1;
             
             int timeEnd = line.IndexOf(']');
             if (timeEnd < 2) return -1;
-            string timeStr = line[1..timeEnd];
-            return TryParseTime(timeStr, out time) ? timeEnd : -1;
+            
+            var timeSpan = line.Slice(1, timeEnd - 1);
+            return TryParseTime(timeSpan, out time) ? timeEnd : -1;
         }
         
         /// <summary>
@@ -194,11 +205,12 @@ namespace FSF.CollectionFrame
         /// <param name="line">Full lyric line</param>
         /// <param name="timeEnd">End position of the time tag</param>
         /// <returns>Cleaned lyric text</returns>
-        private static string ExtractLyricText(string line, int timeEnd)
+        private static string ExtractLyricText(ReadOnlySpan<char> line, int timeEnd)
         {
-            return (line.Length > timeEnd + 1) ? 
-                line.Substring(timeEnd + 1).Trim() : 
-                string.Empty;
+            if (line.Length <= timeEnd + 1)
+                return string.Empty;
+                
+            return line.Slice(timeEnd + 1).Trim().ToString();
         }
         
         /// <summary>
@@ -230,45 +242,61 @@ namespace FSF.CollectionFrame
         /// <param name="timeStr">Time string to parse</param>
         /// <param name="time">Output parameter for converted time (in seconds)</param>
         /// <returns>True if parsing succeeded, false otherwise</returns>
-        private static bool TryParseTime(string timeStr, out float time)
+        private static bool TryParseTime(ReadOnlySpan<char> timeStr, out float time)
         {
             time = -1;
-            ReadOnlySpan<char> span = timeStr.AsSpan();
-            int colonPos = span.IndexOf(':');
-            if (colonPos < 1) return false;
             
-            // Parse minutes component
-            if (!float.TryParse(span.Slice(0, colonPos), out float minutes))
+            // skip non-time tags（[ar:Artist]）
+            if (timeStr.Length < 4)
                 return false;
+                
+            int colonPos = timeStr.IndexOf(':');
+            if (colonPos <= 0 || colonPos >= timeStr.Length - 1)
+                return false;
+
+            // parse minutes
+            if (!int.TryParse(timeStr.Slice(0, colonPos), out int minutes) || minutes < 0)
+                return false;
+
+            // parse seconds and optional milliseconds
+            ReadOnlySpan<char> secondsPart = timeStr.Slice(colonPos + 1);
             
-            // Process seconds component
-            ReadOnlySpan<char> secondsPart = span.Slice(colonPos + 1);
+            // search for decimal point
             int dotPos = secondsPart.IndexOf('.');
-            
-            // Handle milliseconds format [mm:ss.xx]
+            float seconds;
+            float milliseconds = 0f;
+
             if (dotPos >= 0)
             {
-                // Parse whole seconds
-                if (!float.TryParse(secondsPart.Slice(0, dotPos), out float seconds))
+                // parse seconds part
+                if (!float.TryParse(secondsPart.Slice(0, dotPos), out seconds) || 
+                    seconds < 0 || seconds >= 60)
                     return false;
-                    
-                // Parse milliseconds fraction
-                if (!float.TryParse(secondsPart.Slice(dotPos + 1), out float milliseconds))
-                    return false;
-                    
-                // Combine all components
-                time = minutes * 60 + seconds + milliseconds / 100f;
-                return true;
+                
+                // parse milliseconds part
+                if (dotPos + 1 < secondsPart.Length)
+                {
+                    var millisSpan = secondsPart.Slice(dotPos + 1);
+                    if (millisSpan.Length > 0)
+                    {
+                        if (!int.TryParse(millisSpan, out int millisValue) || millisValue < 0)
+                            return false;
+                        
+                        // Convert to fractional seconds
+                        milliseconds = millisValue / (float)Math.Pow(10, millisSpan.Length);
+                    }
+                }
             }
             else
             {
-                // Handle simple format [mm:ss]
-                if (!float.TryParse(secondsPart, out float seconds))
+                // no decimal point, parse whole seconds
+                if (!float.TryParse(secondsPart, out seconds) || 
+                    seconds < 0 || seconds >= 60)
                     return false;
-                    
-                time = minutes * 60 + seconds;
-                return true;
             }
+
+            time = minutes * 60 + seconds + milliseconds;
+            return true;
         }
         
         #endregion
