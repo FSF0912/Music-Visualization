@@ -14,14 +14,14 @@
 >The images and lyrics are sourced from the internet. If there is any infringement, please contact me for removal.
 
 ## Overview
-A real-time audio visualization system developed with `Unity 2021.3 LTS`.  
+A real-time audio visualization system developed with `Unity 2021.3 LTS` or higher.  
 Supports both **pre-recorded audio** and **live microphone input** visualization.  
 Features rhythmic transformations of geometric objects synchronized with audio frequencies.
 
 ## Key Features
 ### 1. Dynamic Lyrics Display
 - **File Format Support**: `.lrc (LyRiCs)`
-- **Auto-Conversion**: Automatically parses lyric files into Unity-compatible data structures
+- **Auto-Conversion**: Automatically parses lyric files by high-performance span into Unity-compatible data structures(TextAsset)
 - **Bilingual Support**: Handles translated lyrics with configurable ordering
 
 ### 2. Visualization Modes
@@ -32,7 +32,8 @@ Features rhythmic transformations of geometric objects synchronized with audio f
 
 ## Getting Started
 ### System Requirements
-- Unity 2021.3+ 
+- Unity 2021.3 or higher.
+- TuanJie Engine(China specialize unity engine) also supported.
 
 ### Installation
 [![Download Latest Release](https://img.shields.io/badge/Download-v1.1.0-blue)](https://github.com/FSF0912/Music-Visualization/releases/)
@@ -46,10 +47,22 @@ public static List<LyricValueKey> Split(string lrcText, bool reverse, params str
 ```
 
 #### Parameter Behavior
-| Reverse Value | Ordering Scheme        |
-|---------------|------------------------|
-| `true`        | Original → Translation |
-| `false`       | Translation → Original |
+
+**bool reserve**
+
+When parsing **two lines of lyrics with the same timestamp** (as often occurs in bilingual lyrics), both lines will be assigned to the same value key, with a line break inserted between them. 
+
+When the `reserve` parameter is set to `true`, the lyric that appears earlier in the file will be placed in the second line. 
+
+If set to `false`, the order will be inverted.
+
+**params string[] richTextSymbols**
+
+Rich text formatting patterns for each language line.
+
+Patterns must contain '*' as a placeholder for text.
+
+Example: `<b>*</b>, <i>*</i>` would make first line bold and second line italic.
 
 > **Note**: This configuration applies to standard bilingual lyrics format. Custom formats may require additional adjustments.
 > More detailed tips is in source file.
