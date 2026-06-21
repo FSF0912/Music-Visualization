@@ -35,7 +35,7 @@ namespace FSF.CollectionFrame
         private float[] audioInfos;
         private AudioClip microRecord;
         private string device;
-        private int lastOffset; // 缓存上一次的偏移量
+        private int lastOffset;
         #endregion
 
         #region Methods
@@ -125,7 +125,6 @@ namespace FSF.CollectionFrame
             var T = target as AudioVisualizer;
             if (T == null) { return; }
             
-            // 优化：使用序列化属性减少直接访问
             SerializedObject serializedObject = new SerializedObject(T);
             SerializedProperty barsProp = serializedObject.FindProperty("BarsList");
             
@@ -141,8 +140,6 @@ namespace FSF.CollectionFrame
                     T.GenerateVisualizationBar();
                 }
             }
-            
-            // 优化：添加范围检查避免无效值
             if (T.LengthSample < 64 || T.LengthSample > 8192 || (T.LengthSample & (T.LengthSample - 1)) != 0)
             {
                 egl.Space(20);
