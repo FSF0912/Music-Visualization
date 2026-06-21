@@ -42,7 +42,7 @@ Features rhythmic geometric transformations driven by spectrum data, paired with
 
 ### Installation
 
-[![Download Latest Release](https://img.shields.io/badge/Download-v1.1.0-blue)](https://github.com/FSF0912/Music-Visualization/releases/)
+[![Download Latest Release](https://img.shields.io/github/v/release/FSF0912/Music-Visualization?style=for-the-badge)](https://github.com/FSF0912/Music-Visualization/releases/)
 
 ## Configuration Guide
 
